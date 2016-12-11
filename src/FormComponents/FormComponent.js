@@ -17,7 +17,6 @@ class FormComponent extends Component {
             this.processValue(evt.target);
             // the field is no longer pristine
             this.setState({pristine: false})
-
             // If validation(s), run them
             let valid = true;
             if (this.props.validation) {
@@ -32,31 +31,62 @@ class FormComponent extends Component {
                 }
             }
         }
-
-
     }
+
 
     processValue({type, value, checked}) {
 
         let fn = () => {
             console.log(this.state);
         }
-        if (type === 'checkbox') {
 
+        if (type === 'checkbox') {
             // controlled component, manage value
             let newVal = ''
             let currStateVal = this.state.value
-            if (checked) {console.log("t" + value);
-                newVal = currStateVal + value + ','
+            if (checked) {
+                let addComma = currStateVal != ''
+                newVal = currStateVal + (addComma ? ',' : '') + value
                 this.setState({value: newVal}, fn)
             } else {
-                newVal = currStateVal.replace(( value + ','), '')
+                if (currStateVal.indexOf(',' + value) > -1) {
+                    newVal = currStateVal.replace(( ',' + value ), '')
+                } else {
+                    newVal = currStateVal.replace(( value ), '')
+                }
+                // remove possible leading comma
+                if (newVal.indexOf(',') == 0) {
+                    newVal = newVal.substring(1, newVal.length)
+                }
                 this.setState({value: newVal}, fn)
             }
         } else {
             this.setState({value: value})
         }
     }
+
+    // processValue({type, value, checked}) {
+    //
+    //     let fn = () => {
+    //         console.log(this.state);
+    //     }
+    //
+    //     if (type === 'checkbox') {
+    //
+    //         // controlled component, manage value
+    //         let newVal = ''
+    //         let currStateVal = this.state.value
+    //         if (checked) {
+    //             newVal = currStateVal + value + ','
+    //             this.setState({value: newVal}, fn)
+    //         } else {
+    //             newVal = currStateVal.replace(( value + ','), '')
+    //             this.setState({value: newVal}, fn)
+    //         }
+    //     } else {
+    //         this.setState({value: value})
+    //     }
+    // }
 
 }
 

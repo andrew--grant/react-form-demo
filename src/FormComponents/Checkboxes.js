@@ -8,20 +8,16 @@ class Checkboxes extends FormComponent {
     }
 
     componentWillMount() {
-        console.log("componentWillMount");
+        let newValue = ''
         this.props.options.map((opt, index) => {
             if (opt.checked) {
-                // set default value
-                this.processValue({type: 'checkbox', value: opt.value, checked: true})
-                console.log("z");
+                newValue += opt.value + (index == this.props.options.length - 1 ? '' : ',')
             }
         })
+        this.processValue({type: 'checkbox', value: newValue, checked: true})
     }
 
     render() {
-
-        // if a checkbox is default checked, how will state
-        // be set given no change event occurs?
 
         return (
             <div className="checkboxes">
@@ -29,11 +25,6 @@ class Checkboxes extends FormComponent {
                     <label htmlFor={this.props.id}>{this.props.label}</label>
                     {
                         this.props.options.map((opt, index) => {
-                            if (opt.checked) {
-                                // set default value
-                                // todo: componentDidMount???
-                                // this.processValue({type: 'checkbox', value: opt.value, checked: true})
-                            }
                             return <input key={index}
                                           type="checkbox"
                                           id={this.props.id}
