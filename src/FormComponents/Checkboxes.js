@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import FormComponent from './FormComponent'
 
 class Checkboxes extends FormComponent {
@@ -7,15 +7,43 @@ class Checkboxes extends FormComponent {
         super(props)
     }
 
+    componentWillMount() {
+        console.log("componentWillMount");
+        this.props.options.map((opt, index) => {
+            if (opt.checked) {
+                // set default value
+                this.processValue({type: 'checkbox', value: opt.value, checked: true})
+                console.log("z");
+            }
+        })
+    }
+
     render() {
+
+        // if a checkbox is default checked, how will state
+        // be set given no change event occurs?
 
         return (
             <div className="checkboxes">
-                <label htmlFor={this.props.id}>{this.props.label}</label>
                 <div>
+                    <label htmlFor={this.props.id}>{this.props.label}</label>
                     {
                         this.props.options.map((opt, index) => {
-                            return <input key={index} type="checkbox" id={this.props.id} name={this.props.id} checked={opt.value ? 'checked' : ''}/>
+                            if (opt.checked) {
+                                // set default value
+                                // todo: componentDidMount???
+                                // this.processValue({type: 'checkbox', value: opt.value, checked: true})
+                            }
+                            return <input key={index}
+                                          type="checkbox"
+                                          id={this.props.id}
+                                          name={this.props.id}
+                                          defaultChecked={opt.checked}
+                                          value={opt.value}
+                                          onChange={(evt) => {
+                                              this.handleChange(evt)
+                                          }}
+                            />
                         })
                     }
                 </div>

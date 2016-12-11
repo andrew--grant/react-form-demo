@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Checkboxes from './FormComponents/Checkboxes'
 import Select from './FormComponents/Select'
 import TextInputSingle from './FormComponents/TextInputSingle'
@@ -93,6 +93,7 @@ class ContactForm extends Component {
     }
 
     render() {
+
         return (
             <form onSubmit={(evt) => this.handleSubmit(evt)}>
 
@@ -100,9 +101,11 @@ class ContactForm extends Component {
                             onChange={(evt) => {
                                 this.handleInputChange(evt)
                             }}
-                            options={[{value: '', label: 'Choose colour'},
-                                {value: 'red', label: 'Red'},
-                                {value: 'blue', label: 'Blue'}]}/>
+                            options={[
+                                {value: 'green',checked: true, label: 'Choose colour'},
+                                {value: 'red', checked: true, label: 'Red'},
+                                {value: 'blue',checked: true, label: 'Blue'}
+                            ]}/>
 
                 <TextInputSingle onChange={(evt) => {
                     this.handleInputChange(evt)
@@ -122,15 +125,15 @@ class ContactForm extends Component {
                 <TextInputMulti label="Your Comments" id="comments">{this.state.form.comments}</TextInputMulti>
 
                 <Select id="colour"
-                              label="Choose a colour"
-                              value={this.state.form.colour}
-                              options={[{value: '', label: 'Choose colour'},
-                                  {value: 'red', label: 'Red'},
-                                  {value: 'blue', label: 'Blue'}]}
-                              validation={this.validation.colour}
-                              onChange={(evt) => {
-                                  this.handleInputChange(evt)
-                              }}
+                        label="Choose a colour"
+                        value={this.state.form.colour}
+                        options={[{value: '', label: 'Choose colour'},
+                            {value: 'red', label: 'Red'},
+                            {value: 'blue', label: 'Blue'}]}
+                        validation={this.validation.colour}
+                        onChange={(evt) => {
+                            this.handleInputChange(evt)
+                        }}
                 />
 
                 <p>This form is {this.state.form.valid ? 'valid' : 'not valid'}</p>
