@@ -14,11 +14,10 @@ class Checkboxes extends FormComponent {
                 newValue += opt.value + (index == this.props.options.length - 1 ? '' : ',')
             }
         })
-        this.processValue({type: 'checkbox', value: newValue, checked: true})
+        this.processValue({type: 'checkbox', value: newValue, checked: true, name:this.props.id})
     }
 
     render() {
-
         return (
             <div className="checkboxes">
                 <div>
@@ -46,7 +45,8 @@ class Checkboxes extends FormComponent {
                             function (val, index) {
                                 return <p className="error-message" key={index}>{val}</p>
                             }
-                        )}
+                        )
+                    }
                 </div>
             </div>
 

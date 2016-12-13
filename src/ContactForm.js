@@ -22,7 +22,8 @@ class ContactForm extends Component {
                 surname: '',
                 emailAddress: '',
                 comments: '',
-                colour: ''
+                colour: '',
+                somecheckboxes: ''
             }
         }
 
@@ -74,12 +75,11 @@ class ContactForm extends Component {
         return formValid
     }
 
-    handleInputChange(evt) {
+    handleInputChange({name, value}) {
         // Track form state
         let form = this.state.form
-        form[evt.target.name] = evt.target.value
+        form[name] = value
         // run validation on every keystroke
-        // todo: this could be an option: onlyValidateFormOnSave="true"
         if (!this.isFormValid()) {
             form.valid = false
         } else {
@@ -90,39 +90,50 @@ class ContactForm extends Component {
 
     handleSubmit(evt) {
         evt.preventDefault()
+
     }
 
     render() {
-
+        console.log('ContactForm state')
+        console.log(this.state)
         return (
-            <form onSubmit={(evt) => this.handleSubmit(evt)}>
+
+            <form>
 
                 <Checkboxes id="somecheckboxes" label="Some Checkboxes"
-                            onChange={(evt) => {
-                                this.handleInputChange(evt)
+                            onChange={({name,value}) => {
+                                this.handleInputChange({name,value})
                             }}
                             options={[
-                                {value: 'green',checked: true, label: 'Choose colour'},
+                                {value: 'green', checked: true, label: 'Green'},
                                 {value: 'red', checked: true, label: 'Red'},
-                                {value: 'blue',checked: true, label: 'Blue'}
+                                {value: 'blue', checked: true, label: 'Blue'}
                             ]}/>
 
-                <TextInputSingle onChange={(evt) => {
-                    this.handleInputChange(evt)
+
+                <TextInputSingle onChange={({name,value}) => {
+                    this.handleInputChange({name,value})
                 }}
                                  id="salutation"
                                  label="Salutation"
                                  validation={this.validation.salutation}/>
 
-                <TextInputSingle onChange={(evt) => {
-                    this.handleInputChange(evt)
+                <TextInputSingle onChange={({name,value}) => {
+                    this.handleInputChange({name,value})
                 }} id="firstName" value={this.state.form.firstName}/>
 
-                <TextInputSingle onChange={(evt) => {
-                    this.handleInputChange(evt)
+
+
+
+                <TextInputSingle onChange={({name,value}) => {
+                    this.handleInputChange({name,value})
                 }} id="surname" value={this.state.form.surname}/>
 
+
+
                 <TextInputMulti label="Your Comments" id="comments">{this.state.form.comments}</TextInputMulti>
+
+
 
                 <Select id="colour"
                         label="Choose a colour"
@@ -131,20 +142,26 @@ class ContactForm extends Component {
                             {value: 'red', label: 'Red'},
                             {value: 'blue', label: 'Blue'}]}
                         validation={this.validation.colour}
-                        onChange={(evt) => {
-                            this.handleInputChange(evt)
+                        onChange={({name,value}) => {
+                            this.handleInputChange({name,value})
                         }}
                 />
 
+
                 <p>This form is {this.state.form.valid ? 'valid' : 'not valid'}</p>
 
-                <button type="submit">Submit</button>
+
+                <button onClick={(evt) => {
+                    this.handleSubmit(evt)
+                }}>Submit
+                </button>
+
+
 
             </form>
         )
     }
 }
-
 
 export default ContactForm
 
