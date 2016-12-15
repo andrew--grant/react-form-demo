@@ -77,20 +77,20 @@ class ContactForm extends Component {
 
     handleInputChange({name, value}) {
         // Track form state
-        let form = this.state.form
-        form[name] = value
-        // run validation on every keystroke
-        if (!this.isFormValid()) {
-            form.valid = false
-        } else {
-            form.valid = true
-        }
-        this.setState({form})
+        let newForm = Object.assign({}, this.state.form, {[name]: value})
+        console.log('newForm')
+        console.log(newForm)
+        this.setState({form: newForm}, () => {
+            if (!this.isFormValid()) {
+                this.setState({form: Object.assign({}, newForm, {valid: false})})
+            } else {
+                this.setState({form: Object.assign({}, newForm, {valid: true})})
+            }
+        })
     }
 
     handleSubmit(evt) {
         evt.preventDefault()
-
     }
 
     render() {
@@ -101,38 +101,37 @@ class ContactForm extends Component {
             <form>
 
                 <Checkboxes id="somecheckboxes" label="Some Checkboxes"
-                            onChange={({name,value}) => {
-                                this.handleInputChange({name,value})
+                            onChange={({name, value}) => {
+                                this.handleInputChange({name, value})
                             }}
                             options={[
-                                {value: 'green', checked: true, label: 'Green'},
-                                {value: 'red', checked: true, label: 'Red'},
+                                {value: 'green', checked: false, label: 'Green'},
+                                {value: 'red', checked: false, label: 'Red'},
                                 {value: 'blue', checked: true, label: 'Blue'}
                             ]}/>
 
 
-                <TextInputSingle onChange={({name,value}) => {
-                    this.handleInputChange({name,value})
+                <TextInputSingle onChange={({name, value}) => {
+                    this.handleInputChange({name, value})
                 }}
                                  id="salutation"
                                  label="Salutation"
                                  validation={this.validation.salutation}/>
 
-                <TextInputSingle onChange={({name,value}) => {
-                    this.handleInputChange({name,value})
+                <TextInputSingle onChange={({name, value}) => {
+                    this.handleInputChange({name, value})
                 }} id="firstName" value={this.state.form.firstName}/>
 
 
-
-
-                <TextInputSingle onChange={({name,value}) => {
-                    this.handleInputChange({name,value})
+                <TextInputSingle onChange={({name, value}) => {
+                    this.handleInputChange({name, value})
                 }} id="surname" value={this.state.form.surname}/>
 
 
-
-                <TextInputMulti label="Your Comments" id="comments">{this.state.form.comments}</TextInputMulti>
-
+                <TextInputMulti label="Your Comments" id="comments" value={this.state.form.comments}
+                                onChange={({name, value}) => {
+                                    this.handleInputChange({name, value})
+                                }}/>
 
 
                 <Select id="colour"
@@ -142,8 +141,8 @@ class ContactForm extends Component {
                             {value: 'red', label: 'Red'},
                             {value: 'blue', label: 'Blue'}]}
                         validation={this.validation.colour}
-                        onChange={({name,value}) => {
-                            this.handleInputChange({name,value})
+                        onChange={({name, value}) => {
+                            this.handleInputChange({name, value})
                         }}
                 />
 
@@ -155,7 +154,6 @@ class ContactForm extends Component {
                     this.handleSubmit(evt)
                 }}>Submit
                 </button>
-
 
 
             </form>

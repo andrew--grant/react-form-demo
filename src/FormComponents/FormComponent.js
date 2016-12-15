@@ -10,8 +10,10 @@ class FormComponent extends Component {
     handleChange(evt) {
         this.processValue(evt.target);
         // the field is no longer pristine
-        this.setState({pristine: false})
-        // If validation(s), run them
+        this.setState({pristine: false});
+    }
+
+    runValidations() {
         let valid = true;
         if (this.props.validation) {
             this.state.errorMessages = [];
@@ -46,7 +48,9 @@ class FormComponent extends Component {
                 if (newVal.indexOf(',') == 0) {
                     newVal = newVal.substring(1, newVal.length)
                 }
-                this.setState({value: newVal})
+                this.setState({value: newVal}, () => {
+                    this.runValidations()
+                })
             }
 
             if (doChangeEvent) {
@@ -55,7 +59,9 @@ class FormComponent extends Component {
 
         } else {
 
-            this.setState({value: value})
+            this.setState({value: value}, () => {
+                this.runValidations();
+            })
 
             if (doChangeEvent) {
                 this.props.onChange({name: name, value: value})

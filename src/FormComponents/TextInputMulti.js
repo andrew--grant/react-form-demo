@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import FormComponent from './FormComponent'
 
 class TextInputMulti extends FormComponent {
@@ -7,10 +7,7 @@ class TextInputMulti extends FormComponent {
         super(props)
     }
 
-
-
     render() {
-
         return (
             <div className="text-input-single">
                 <label htmlFor={this.props.id}>{this.props.label}</label>
