@@ -13,31 +13,38 @@ class CheckboxGroup extends FormComponent {
         this.processValue({type: 'checkbox', value: newValue, checked: true, name: this.props.id})
     }
 
+    handleCheckboxGroupChange(evt) {
+        this.handleChange(evt)
+        // todo: don't want the checkboxes sending individual
+        // events, we want to create a 'handleCheckboxGroupChange'
+        // event and pass it up
+
+
+    }
+
     render() {
         return (
-            <div className="checkboxes">
+            <div className={this.getClassName()}>
                 <div>
-                    {this.getLabel()}
                     {
                         this.props.options.map((opt, index) => {
                             return (
                                 <div key={index}>
-                                    <span>{opt.label}</span>
-                                    <input
-                                        type="checkbox"
-                                        id={this.props.id}
-                                        name={this.props.id}
-                                        defaultChecked={opt.checked}
-                                        value={opt.value}
-                                        onChange={(evt) => {
-                                            this.handleChange(evt)
-                                        }}
-                                    />
+                                    <label>{opt.label}
+                                        <input
+                                            type="checkbox"
+                                            id={this.props.id}
+                                            name={this.props.id}
+                                            defaultChecked={opt.checked}
+                                            value={opt.value}
+                                            onChange={(evt) => {
+                                                this.handleCheckboxGroupChange(evt)
+                                            }}
+                                        /></label>
                                 </div>)
                         })
                     }
                 </div>
-
 
                 <div>
                     {

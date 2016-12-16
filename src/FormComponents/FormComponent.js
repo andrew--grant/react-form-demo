@@ -8,6 +8,7 @@ class FormComponent extends Component {
     }
 
     handleChange(evt) {
+
         this.processValue(evt.target);
         // the field is no longer pristine
         this.setState({pristine: false});

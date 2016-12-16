@@ -44,9 +44,19 @@ class ContactForm extends Component {
             colour: [
                 {
                     rule: () => {
+                        console.log('rulez colour')
                         return this.state.form.colour.length > 0
                     },
                     message: 'Colour is required'
+                }
+            ],
+            foods: [
+                {
+                    rule: () => {
+                        console.log('rulez foods')
+                        return this.state.form.foods.length > 0
+                    },
+                    message: 'At least one food must be checked'
                 }
             ]
         }
@@ -97,16 +107,15 @@ class ContactForm extends Component {
             <form>
 
                 <CheckboxGroup id="foods"
-                            label="Allowed Foods"
-                            onChange={({name, value}) => {
-                                this.handleInputChange({name, value})
-                            }}
-                            options={[
-                                {value: 'meat', checked: false, label: 'Meat'},
-                                {value: 'fish', checked: false, label: 'Fish'},
-                                {value: 'eggs', checked: false, label: 'Eggs'},
-                                {value: 'cheese', checked: true, label: 'Cheese'}
-                            ]}/>
+                               onChange={({name, value}) => {
+                                   this.handleInputChange({name, value})
+                               }}
+                               options={[
+                                   {value: 'meat', checked: false, label: 'Meat'},
+                                   {value: 'fish', checked: false, label: 'Fish'},
+                                   {value: 'eggs', checked: false, label: 'Eggs'},
+                                   {value: 'cheese', checked: true, label: 'Cheese'}
+                               ]}/>
 
                 <TextInputSingle onChange={({name, value}) => {
                     this.handleInputChange({name, value})

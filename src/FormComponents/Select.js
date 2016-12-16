@@ -7,7 +7,6 @@ class Select extends FormComponent {
 
         let defaultValue = ''
         this.props.options.map((opt) => {
-            console.log(opt)
             if (opt.selected) {
                 defaultValue = opt.value
                 return false
