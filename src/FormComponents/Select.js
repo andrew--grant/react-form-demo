@@ -1,22 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
 import FormComponent from './FormComponent'
 
 class Select extends FormComponent {
 
-    constructor(props) {
-        super(props)
-    }
-
     render() {
 
+        let defaultValue = ''
+        this.props.options.map((opt) => {
+            console.log(opt)
+            if (opt.selected) {
+                defaultValue = opt.value
+                return false
+            }
+        })
+
         return (
+
             <div className="select">
-                <label htmlFor={this.props.id}>{this.props.label}</label>
-                <select className={(this.state.pristine ? 'input-pristine' : 'input-dirty') + ' ' + (this.state.valid ? 'input-valid' : 'input-invalid')}
-                        name={this.props.id} id={this.props.id}
-                        onChange={(evt) => {
-                            this.handleChange(evt)
-                        }}>
+                {this.getLabel()}
+                <select
+                    defaultValue={defaultValue}
+                    className={this.getClassName()}
+                    name={this.props.id} id={this.props.id}
+                    onChange={(evt) => {
+                        this.handleChange(evt)
+                    }}>
                     {
                         this.props.options.map((opt, index) => {
                             return <option key={index} value={opt.value}>{opt.label}</option>

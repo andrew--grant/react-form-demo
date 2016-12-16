@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Checkboxes from './FormComponents/Checkboxes'
+import CheckboxGroup from './FormComponents/CheckboxGroup'
 import Select from './FormComponents/Select'
 import TextInputSingle from './FormComponents/TextInputSingle'
 import TextInputMulti from './FormComponents/TextInputMulti'
@@ -10,9 +10,8 @@ class ContactForm extends Component {
 
         super(props)
 
-        // this is all internal/local state as
-        // the form gathers data and becomes a
-        // 'submittable' data-set
+        // Form level state (gathering a complete
+        // and valid data set)
 
         this.state = {
             form: {
@@ -20,18 +19,14 @@ class ContactForm extends Component {
                 salutation: '',
                 firstName: '',
                 surname: '',
-                emailAddress: '',
                 comments: '',
                 colour: '',
-                somecheckboxes: ''
+                foods: ''
             }
         }
 
         this.validation = {
-
-            // keys must match the id of
-            // the associated field components
-
+            // keys must match the id of the associated field components
             salutation: [
                 {
                     rule: () => {
@@ -49,17 +44,16 @@ class ContactForm extends Component {
             colour: [
                 {
                     rule: () => {
-                        return this.state.form.colour.length != ''
+                        return this.state.form.colour.length > 0
                     },
                     message: 'Colour is required'
                 }
             ]
         }
-
     }
 
     isFormValid() {
-        // see if all form level validation is satisfied
+        // Form level validation
         let formValid = true
         for (const key of Object.keys(this.validation)) {
             for (let validation of this.validation[key]) {
@@ -76,11 +70,11 @@ class ContactForm extends Component {
     }
 
     handleInputChange({name, value}) {
-        // Track form state
+        // Track form state.
         let newForm = Object.assign({}, this.state.form, {[name]: value})
-        console.log('newForm')
-        console.log(newForm)
         this.setState({form: newForm}, () => {
+            // After state has been updated, see if the
+            // form is valid? Update state accordingly
             if (!this.isFormValid()) {
                 this.setState({form: Object.assign({}, newForm, {valid: false})})
             } else {
@@ -91,6 +85,8 @@ class ContactForm extends Component {
 
     handleSubmit(evt) {
         evt.preventDefault()
+        console.log('handleSubmit state')
+        console.log(this.state)
     }
 
     render() {
@@ -100,16 +96,17 @@ class ContactForm extends Component {
 
             <form>
 
-                <Checkboxes id="somecheckboxes" label="Some Checkboxes"
+                <CheckboxGroup id="foods"
+                            label="Allowed Foods"
                             onChange={({name, value}) => {
                                 this.handleInputChange({name, value})
                             }}
                             options={[
-                                {value: 'green', checked: false, label: 'Green'},
-                                {value: 'red', checked: false, label: 'Red'},
-                                {value: 'blue', checked: true, label: 'Blue'}
+                                {value: 'meat', checked: false, label: 'Meat'},
+                                {value: 'fish', checked: false, label: 'Fish'},
+                                {value: 'eggs', checked: false, label: 'Eggs'},
+                                {value: 'cheese', checked: true, label: 'Cheese'}
                             ]}/>
-
 
                 <TextInputSingle onChange={({name, value}) => {
                     this.handleInputChange({name, value})
@@ -118,43 +115,37 @@ class ContactForm extends Component {
                                  label="Salutation"
                                  validation={this.validation.salutation}/>
 
-                <TextInputSingle onChange={({name, value}) => {
+                <TextInputSingle label="Other label" onChange={({name, value}) => {
                     this.handleInputChange({name, value})
                 }} id="firstName" value={this.state.form.firstName}/>
 
-
-                <TextInputSingle onChange={({name, value}) => {
+                <TextInputSingle label="some label " onChange={({name, value}) => {
                     this.handleInputChange({name, value})
                 }} id="surname" value={this.state.form.surname}/>
-
 
                 <TextInputMulti label="Your Comments" id="comments" value={this.state.form.comments}
                                 onChange={({name, value}) => {
                                     this.handleInputChange({name, value})
                                 }}/>
 
-
                 <Select id="colour"
-                        label="Choose a colour"
-                        value={this.state.form.colour}
-                        options={[{value: '', label: 'Choose colour'},
+                        options={[
+                            {value: '', label: 'Please Choose a Frickin Colour'},
                             {value: 'red', label: 'Red'},
-                            {value: 'blue', label: 'Blue'}]}
+                            {value: 'blue', label: 'Blue'}
+                        ]}
                         validation={this.validation.colour}
                         onChange={({name, value}) => {
                             this.handleInputChange({name, value})
                         }}
                 />
 
-
                 <p>This form is {this.state.form.valid ? 'valid' : 'not valid'}</p>
-
 
                 <button onClick={(evt) => {
                     this.handleSubmit(evt)
                 }}>Submit
                 </button>
-
 
             </form>
         )
@@ -162,12 +153,3 @@ class ContactForm extends Component {
 }
 
 export default ContactForm
-
-
-
-
-
-
-
-
-

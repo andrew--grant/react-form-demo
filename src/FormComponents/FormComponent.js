@@ -14,13 +14,12 @@ class FormComponent extends Component {
     }
 
     runValidations() {
-        let valid = true;
         if (this.props.validation) {
-            this.state.errorMessages = [];
+            this.setState({errorMessages: []})
             for (let validation of this.props.validation) {
                 if (!validation.rule()) {
-                    this.setState({valid: false})
-                    this.state.errorMessages.push(validation.message)
+                    let errMessages = [].concat(this.state.errorMessages, validation.message)
+                    this.setState({valid: false, errorMessages: errMessages})
                 } else {
                     this.setState({valid: true})
                 }
@@ -35,7 +34,7 @@ class FormComponent extends Component {
             let newVal = ''
             let currStateVal = this.state.value
             if (checked) {
-                let addComma = currStateVal != ''
+                let addComma = currStateVal !== ''
                 newVal = currStateVal + (addComma ? ',' : '') + value
                 this.setState({value: newVal})
             } else {
@@ -45,7 +44,7 @@ class FormComponent extends Component {
                     newVal = currStateVal.replace(( value ), '')
                 }
                 // remove possible leading comma
-                if (newVal.indexOf(',') == 0) {
+                if (newVal.indexOf(',') === 0) {
                     newVal = newVal.substring(1, newVal.length)
                 }
                 this.setState({value: newVal}, () => {
@@ -70,6 +69,17 @@ class FormComponent extends Component {
         }
     }
 
+    getLabel() {
+        let label = null;
+        if (this.props.label) {
+            label = <label htmlFor={this.props.id}>{this.props.label}</label>
+        }
+        return label
+    }
+
+    getClassName() {
+        return (this.state.pristine ? 'input-pristine' : 'input-dirty') + ' ' + (this.state.valid ? 'input-valid' : 'input-invalid')
+    }
 }
 
 export default FormComponent
